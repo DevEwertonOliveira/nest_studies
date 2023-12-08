@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: estudos
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - 3000:3000
+    networks:
+      - api
+    command: --pid-file /var/lib/mysql/mysqld.pid
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+    volumes:
+      - ./data:/data
+    networks:
+      - api
+    ports:
+      - 3305:3306
+
+networks:
+  api:
+    driver: bridge
